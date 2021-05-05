@@ -51,6 +51,10 @@ path "database/creds/jonos_db" {
 } <br>
 EOF
 
+kubectl exec -it -n postgres consul-db-vault-0 -- vault policy list
+
+kubectl exec -it -n postgres consul-db-vault-0 -- vault policy read postgres-policy
+
 kubectl exec -it -n postgres consul-db-vault-0 -- vault token create -policy postgres-policy
 
 wget https://raw.githubusercontent.com/asvesj/terraform-gke-vault-consul-postgres/master/dynamic-secrets-k8s/config/postgres.yml
