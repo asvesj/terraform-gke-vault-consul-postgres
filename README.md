@@ -11,26 +11,26 @@ kubectl get pods -n postgres
 
 kubectl exec -it -n postgres consul-db-vault-0 -- vault operator init
 
-Unseal Key 1: Sg3/mHAoAsCXzdwzBYOrWJLijNDg9anZ46zjd6RiBAG3
-Unseal Key 2: NzoZc6bYa+yHVC8o+gQT4t9o0xhDninui4vWWVR03rOI
-Unseal Key 3: v158nM2jtLV1nJN3KMxOy2Ux5yrgvpaBFu9hHqxalPro
-Unseal Key 4: l+OV4/wK59ow7AlpiKaEAKJiDNlYSRhDptGf1MhxuSut
-Unseal Key 5: eEYz5FIyRYSndFvCj9NEpZU71DPq8gJRAELJopGhngmQ
+Unseal Key 1: Sg3/mHAoAsCXzdwzBYOrWJLijNDg9anZ46zjd6RiBAG3 <br>
+Unseal Key 2: NzoZc6bYa+yHVC8o+gQT4t9o0xhDninui4vWWVR03rOI <br>
+Unseal Key 3: v158nM2jtLV1nJN3KMxOy2Ux5yrgvpaBFu9hHqxalPro <br>
+Unseal Key 4: l+OV4/wK59ow7AlpiKaEAKJiDNlYSRhDptGf1MhxuSut <br>
+Unseal Key 5: eEYz5FIyRYSndFvCj9NEpZU71DPq8gJRAELJopGhngmQ <br>
 
 Initial Root Token: s.k2VnDZ2kHOb0B6ONzDuSJPcG
 
 Unseal the first vault server until it reaches the key threshold
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal Sg3/mHAoAsCXzdwzBYOrWJLijNDg9anZ46zjd6RiBAG3
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal NzoZc6bYa+yHVC8o+gQT4t9o0xhDninui4vWWVR03rOI
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal v158nM2jtLV1nJN3KMxOy2Ux5yrgvpaBFu9hHqxalPro
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal Sg3/mHAoAsCXzdwzBYOrWJLijNDg9anZ46zjd6RiBAG3 <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal NzoZc6bYa+yHVC8o+gQT4t9o0xhDninui4vWWVR03rOI <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal v158nM2jtLV1nJN3KMxOy2Ux5yrgvpaBFu9hHqxalPro <br>
 
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-1 -- vault operator unseal Sg3/mHAoAsCXzdwzBYOrWJLijNDg9anZ46zjd6RiBAG3
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-1 -- vault operator unseal NzoZc6bYa+yHVC8o+gQT4t9o0xhDninui4vWWVR03rOI
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-1 -- vault operator unseal v158nM2jtLV1nJN3KMxOy2Ux5yrgvpaBFu9hHqxalPro
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-1 -- vault operator unseal Sg3/mHAoAsCXzdwzBYOrWJLijNDg9anZ46zjd6RiBAG3 <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-1 -- vault operator unseal NzoZc6bYa+yHVC8o+gQT4t9o0xhDninui4vWWVR03rOI <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-1 -- vault operator unseal v158nM2jtLV1nJN3KMxOy2Ux5yrgvpaBFu9hHqxalPro <br>
 
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal Sg3/mHAoAsCXzdwzBYOrWJLijNDg9anZ46zjd6RiBAG3
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal NzoZc6bYa+yHVC8o+gQT4t9o0xhDninui4vWWVR03rOI
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal v158nM2jtLV1nJN3KMxOy2Ux5yrgvpaBFu9hHqxalPro
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal Sg3/mHAoAsCXzdwzBYOrWJLijNDg9anZ46zjd6RiBAG3 <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal NzoZc6bYa+yHVC8o+gQT4t9o0xhDninui4vWWVR03rOI <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal v158nM2jtLV1nJN3KMxOy2Ux5yrgvpaBFu9hHqxalPro <br>
 	
 kubectl exec -it -n postgres consul-db-vault-0 -- vault status
 kubectl exec -it -n postgres consul-server-0 -- consul members
