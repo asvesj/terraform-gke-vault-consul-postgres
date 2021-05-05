@@ -35,7 +35,7 @@ kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault oper
 kubectl exec -it -n postgres consul-db-vault-0 -- vault status <br>
 kubectl exec -it -n postgres consul-server-0 -- consul members <br>
 
-kubectl exec -it -n postgres consul-db-vault-0 -- vault login <root token>
+kubectl exec -it -n postgres consul-db-vault-0 -- vault login (root token)
 	
 kubectl exec -it -n postgres consul-db-vault-0 -- vault write postgres-policy << EOF
 path "database/roles/*" {
