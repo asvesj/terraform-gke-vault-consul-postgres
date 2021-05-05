@@ -37,7 +37,7 @@ kubectl exec -it -n postgres consul-server-0 -- consul members <br>
 
 kubectl exec -it -n postgres consul-db-vault-0 -- vault login (root token)
 	
-kubectl exec -it -n postgres consul-db-vault-0 -- vault write postgres-policy << EOF
+kubectl exec -it -n postgres consul-db-vault-0 -- vault write postgres-policy << EOF <br>
 path "database/roles/*" {
   capabilities = ["create", "read", "update", "delete", "list"] 
 }
