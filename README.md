@@ -35,8 +35,9 @@ kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault oper
 kubectl exec -it -n postgres consul-db-vault-0 -- vault status
 kubectl exec -it -n postgres consul-server-0 -- consul members
 
-kubectl exec -ti -n postgres consul-db-vault-0 -- vault login  s.k2VnDZ2kHOb0B6ONzDuSJPcG
+kubectl exec -it -n postgres consul-db-vault-0 -- vault login s.k2VnDZ2kHOb0B6ONzDuSJPcG
 	
+kubectl exec -it -n postgres consul-db-vault-0 -- vault write postgres-policy << EOF
 # policy allowing creation and configuration of databases and roles
 path "database/roles/*" {
   capabilities = ["create", "read", "update", "delete", "list"] 
@@ -50,10 +51,13 @@ path "database/config/*" {
 path "database/creds/jonos_db" {
   capabilities = ["read"] 
 }
+EOF
+
+kubectl exec -it -n postgres consul-db-vault-0 -- vault token create -policy postgres-policy
 
 kubectl exec -it -n postgres consul-db-vault-0 -- vault policy list
 
-kubectl exec -it -n postgres consul-db-vault-0 -- vault policy read postgres
+kubectl exec -it -n postgres consul-db-vault-0 -- vault policy read postgres-policy
 
 wget https://raw.githubusercontent.com/asvesj/terraform-gke-vault-consul-postgres/dynamic-secrets-k8s/config/postgres.yml
 
@@ -63,16 +67,16 @@ kubectl delete -n postgres -f postgres.yml
 
 kubectl get pods -n postgres 
 
-kubectl exec -ti -n postgres consul-db-vault-0 -- vault secrets enable database
+kubectl exec -it -n postgres consul-db-vault-0 -- vault secrets enable database
 
-kubectl exec -ti -n postgres consul-db-vault-0 -- vault write database/config/jonos_db \
+kubectl exec -it -n postgres consul-db-vault-0 -- vault write database/config/jonos_db \
     plugin_name=postgresql-database-plugin \
     allowed_roles="scorpion,subzero" \
     connection_url="postgresql://{{username}}:{{password}}@postgres:5432/jonos_db?sslmode=disable" \
     username="postgres" \
     password="password"
 
-kubectl exec -ti -n postgres consul-db-vault-0 -- vault write database/roles/scorpion  \
+kubectl exec -it -n postgres consul-db-vault-0 -- vault write database/roles/scorpion  \
     db_name=jonos_db \
     creation_statements="CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'; \
     GRANT INSERT ON ALL TABLES IN SCHEMA public TO \"{{name}}\"; \
@@ -80,7 +84,7 @@ kubectl exec -ti -n postgres consul-db-vault-0 -- vault write database/roles/sco
     default_ttl="1h" \
     max_ttl="24h"
 
-kubectl exec -ti -n postgres consul-db-vault-0 -- vault write database/roles/subzero \
+kubectl exec -it -n postgres consul-db-vault-0 -- vault write database/roles/subzero \
     db_name=jonos_db \
     creation_statements="CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'; \
     GRANT SELECT ON ALL TABLES IN SCHEMA public TO \"{{name}}\";" \
@@ -88,13 +92,13 @@ kubectl exec -ti -n postgres consul-db-vault-0 -- vault write database/roles/sub
     default_ttl="1h" \
     max_ttl="24h"
 
-kubectl exec -ti -n postgres consul-db-vault-0 -- vault write --force database/rotate-root/jonos_db
+kubectl exec -it -n postgres consul-db-vault-0 -- vault write --force database/rotate-root/jonos_db
 
 kubectl exec -it -n postgres $(kubectl get pods -n postgres --selector "app=postgres" -o jsonpath="{.items[0].metadata.name}") -c postgres -- bash -c 'PGPASSWORD=password psql -U postgres jonos_db'
 
-kubectl exec -ti -n postgres consul-db-vault-0 -- vault read database/creds/scorpion
+kubectl exec -it -n postgres consul-db-vault-0 -- vault read database/creds/scorpion
 
-kubectl exec -ti -n postgres consul-db-vault-0 -- vault read database/creds/subzero
+kubectl exec -it -n postgres consul-db-vault-0 -- vault read database/creds/subzero
 	
 POD=`kubectl get pods -n postgres -l app=postgres -o wide | grep -v NAME | awk '{print $1}'`
   	
