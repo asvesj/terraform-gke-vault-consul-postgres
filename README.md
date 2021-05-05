@@ -4,7 +4,7 @@ gcloud container clusters get-credentials k8s --zone asia-southeast1-a --project
 
 Open new terminal for each port forward:
 
-kubectl port-forward -n postgres consul-server-0 8080:8500
+kubectl port-forward -n postgres consul-server-0 8080:8500 <br>
 kubectl port-forward -n postgres consul-db-vault-0 8081:8200
 
 kubectl get pods -n postgres
