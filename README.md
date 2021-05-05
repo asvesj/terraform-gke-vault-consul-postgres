@@ -1,8 +1,8 @@
 This repo will contain all the code used in the demo.
 
-gcloud container clusters get-credentials k8s --zone asia-southeast1-a  --project hashi-kubernetes-db
+gcloud container clusters get-credentials k8s --zone asia-southeast1-a --project hashi-kubernetes-db
 
-Open new terminal for each port forward
+Open new terminal for each port forward:
 
 kubectl port-forward -n postgres consul-server-0 8080:8500
 kubectl port-forward -n postgres consul-db-vault-0 8081:8200
@@ -37,7 +37,7 @@ kubectl exec -it -n postgres consul-server-0 -- consul members
 
 kubectl exec -ti -n postgres consul-db-vault-0 -- vault login  s.k2VnDZ2kHOb0B6ONzDuSJPcG
 	
-	# policy allowing creation and configuration of databases and roles
+# policy allowing creation and configuration of databases and roles
 path "database/roles/*" {
   capabilities = ["create", "read", "update", "delete", "list"] 
 }
@@ -50,19 +50,27 @@ path "database/config/*" {
 path "database/creds/jonos_db" {
   capabilities = ["read"] 
 }
-	kubectl exec -it -n postgres consul-db-vault-0 -- vault policy list
 
-	kubectl exec -it -n postgres consul-db-vault-0 -- vault policy read postgres
+kubectl exec -it -n postgres consul-db-vault-0 -- vault policy list
 
-	wget https://raw.githubusercontent.com/asvesj/demo-vault/master/dynamic-secrets-k8s/config/postgres.yml
+kubectl exec -it -n postgres consul-db-vault-0 -- vault policy read postgres
 
-	kubectl create -n postgres -f postgres.yml 
+wget https://raw.githubusercontent.com/asvesj/terraform-gke-vault-consul-postgres/dynamic-secrets-k8s/config/postgres.yml
 
-	kubectl delete -n postgres -f postgres.yml
+kubectl create -n postgres -f postgres.yml 
 
-	kubectl get pods -n postgres 
+kubectl delete -n postgres -f postgres.yml
 
-	kubectl exec -ti -n postgres consul-db-vault-0 -- vault secrets enable database
+kubectl get pods -n postgres 
+
+kubectl exec -ti -n postgres consul-db-vault-0 -- vault secrets enable database
+
+kubectl exec -ti -n postgres consul-db-vault-0 -- vault write database/config/jonos_db \
+    plugin_name=postgresql-database-plugin \
+    allowed_roles="scorpion,subzero" \
+    connection_url="postgresql://{{username}}:{{password}}@postgres:5432/jonos_db?sslmode=disable" \
+    username="postgres" \
+    password="password"
 
 kubectl exec -ti -n postgres consul-db-vault-0 -- vault write database/roles/scorpion  \
     db_name=jonos_db \
@@ -80,36 +88,34 @@ kubectl exec -ti -n postgres consul-db-vault-0 -- vault write database/roles/sub
     default_ttl="1h" \
     max_ttl="24h"
 
-	kubectl exec -ti -n postgres consul-db-vault-0 -- vault write --force database/rotate-root/jonos_db
+kubectl exec -ti -n postgres consul-db-vault-0 -- vault write --force database/rotate-root/jonos_db
 
-	kubectl exec -it -n postgres $(kubectl get pods -n postgres --selector "app=postgres" -o jsonpath="{.items[0].metadata.name}") -c postgres -- bash -c 'PGPASSWORD=password psql -U postgres jonos_db'
+kubectl exec -it -n postgres $(kubectl get pods -n postgres --selector "app=postgres" -o jsonpath="{.items[0].metadata.name}") -c postgres -- bash -c 'PGPASSWORD=password psql -U postgres jonos_db'
 
-	kubectl exec -ti -n postgres consul-db-vault-0 -- vault read database/creds/scorpion
+kubectl exec -ti -n postgres consul-db-vault-0 -- vault read database/creds/scorpion
 
 kubectl exec -ti -n postgres consul-db-vault-0 -- vault read database/creds/subzero
 	
-	POD=`kubectl get pods -n postgres -l app=postgres -o wide | grep -v NAME | awk '{print $1}'`
+POD=`kubectl get pods -n postgres -l app=postgres -o wide | grep -v NAME | awk '{print $1}'`
   	
 kubectl exec -it -n postgres $POD -- psql -U  jonos_db
 
-	CREATE TABLE fatality (id serial, title text);
+CREATE TABLE fatality (id serial, title text);
 
-	INSERT INTO fatality (title) VALUES ('Chain Reaction');
+INSERT INTO fatality (title) VALUES ('Chain Reaction');
 
-	INSERT INTO fatality (title) VALUES ('Ice-Cutioner');
+INSERT INTO fatality (title) VALUES ('Ice-Cutioner');
 
-	INSERT INTO fatality (title) VALUES ('You are Next');
+INSERT INTO fatality (title) VALUES ('You are Next');
 
-	A1a-4vYbTwEZv53qQmap
-	
-	\c – to connect to db
+\c – to connect to db
 
-	\l – to list dbs
+\l – to list dbs
 
-	\du – to list roles
+\du – to list roles
 
-	\dt – to list tables
+\dt – to list tables
 
-	\z artworks – to see table privileges
+\z fatality – to see table privileges
 
-	table artworks;
+table fatality;
