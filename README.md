@@ -19,7 +19,7 @@ Unseal Key 5: eEYz5FIyRYSndFvCj9NEpZU71DPq8gJRAELJopGhngmQ <br>
 
 Initial Root Token: s.k2VnDZ2kHOb0B6ONzDuSJPcG
 
-Unseal the first vault server until it reaches the key threshold
+Unseal the first vault server until it reaches the key threshold <br>
 kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal Sg3/mHAoAsCXzdwzBYOrWJLijNDg9anZ46zjd6RiBAG3 <br>
 kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal NzoZc6bYa+yHVC8o+gQT4t9o0xhDninui4vWWVR03rOI <br>
 kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal v158nM2jtLV1nJN3KMxOy2Ux5yrgvpaBFu9hHqxalPro <br>
