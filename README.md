@@ -48,7 +48,7 @@ path "database/config/*" {
 
 path "database/creds/jonos_db" {
   capabilities = ["read"] 
-}
+} <br>
 EOF
 
 kubectl exec -it -n postgres consul-db-vault-0 -- vault token create -policy postgres-policy
