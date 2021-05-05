@@ -98,7 +98,7 @@ kubectl exec -it -n postgres consul-db-vault-0 -- vault read database/creds/scor
 
 kubectl exec -it -n postgres consul-db-vault-0 -- vault read database/creds/subzero
 	
-POD=`kubectl get pods -n postgres -l app=postgres -o wide | grep -v NAME | awk '{print $1}'`
+POD='kubectl get pods -n postgres -l app=postgres -o wide | grep -v NAME | awk '{print $1}''
   	
 kubectl exec -it -n postgres $POD -- psql -U  jonos_db
 
