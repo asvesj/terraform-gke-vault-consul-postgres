@@ -32,8 +32,8 @@ kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault oper
 kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal (unseal key) <br>
 kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal (unseal key) <br>
 	
-kubectl exec -it -n postgres consul-db-vault-0 -- vault status
-kubectl exec -it -n postgres consul-server-0 -- consul members
+kubectl exec -it -n postgres consul-db-vault-0 -- vault status <br>
+kubectl exec -it -n postgres consul-server-0 -- consul members <br>
 
 kubectl exec -it -n postgres consul-db-vault-0 -- vault login <root token>
 	
