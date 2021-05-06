@@ -60,7 +60,7 @@ kubectl exec -it -n postgres consul-db-vault-0 -- vault policy read postgres-pol
 
 kubectl exec -it -n postgres consul-db-vault-0 -- vault token create -policy postgres-policy
 
-wget https://raw.githubusercontent.com/asvesj/terraform-gke-vault-consul-postgres/master/dynamic-secrets-k8s/config/postgres.yml
+wget https://raw.githubusercontent.com/asvesj/terraform-gke-vault-consul-postgres/master/postgres.yml
 
 kubectl create -n postgres -f postgres.yml 
 
