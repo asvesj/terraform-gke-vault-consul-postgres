@@ -7,9 +7,9 @@ To view the YouTube videos please click on the below links: <br>
 
 Part 1 - https://youtu.be/BOQG9iaHA24
 
-Part 2 - 
+Part 2 - https://youtu.be/giyAODWembk
 
-Part 3 - 
+Part 3 - https://youtu.be/iEKyimVexo8
 
 This repo will contain all the code used in the demo so please watch the videos to learn when and where to use which line of code.
 
