@@ -5,6 +5,12 @@ This demo is designed to show how simple it is to deploy a kubernetes cluster in
 
 To view the YouTube videos please click on the below links: <br>
 
+Part 1 - https://youtu.be/BOQG9iaHA24
+
+Part 2 - 
+
+Part 3 - 
+
 This repo will contain all the code used in the demo so please watch the videos to learn when and where to use which line of code.
 
 gcloud container clusters get-credentials k8s --zone asia-southeast1-a --project hashi-kubernetes-db
