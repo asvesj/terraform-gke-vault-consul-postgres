@@ -3,6 +3,8 @@ Terraform-GKE-Vault-Consul-Postgres Demo
 Description: <br>
 This demo is designed to show how simple it is to deploy a kubernetes cluster in GCP using Terraform Cloud. It will then deploy Consul and Vault on the same cluster and finally, use Vault to generate dynamic secrets for a Postgres database.
 
+This repo will contain all the code used in the demo so please watch the videos to learn when and where to use which line of code.
+
 To view the YouTube videos please click on the below links: <br>
 
 Part 1 - https://youtu.be/BOQG9iaHA24
@@ -10,8 +12,6 @@ Part 1 - https://youtu.be/BOQG9iaHA24
 Part 2 - https://youtu.be/giyAODWembk
 
 Part 3 - https://youtu.be/iEKyimVexo8
-
-This repo will contain all the code used in the demo so please watch the videos to learn when and where to use which line of code.
 
 gcloud container clusters get-credentials k8s --zone asia-southeast1-a --project hashi-kubernetes-db
 
