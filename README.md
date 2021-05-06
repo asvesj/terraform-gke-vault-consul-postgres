@@ -5,7 +5,7 @@ gcloud container clusters get-credentials k8s --zone asia-southeast1-a --project
 Open new terminal for each port forward:
 
 kubectl port-forward -n postgres consul-server-0 8080:8500 <br>
-kubectl port-forward -n postgres consul-db-vault-0 8081:8200
+kubectl port-forward -n postgres consul-db-vault-0 8081:8200 <br>
 
 kubectl get pods -n postgres
 
@@ -20,36 +20,32 @@ Unseal Key 5: <br>
 Initial Root Token: 
 
 Unseal the first vault server until it reaches the key threshold <br>
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal (unseal key) <br>
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal (unseal key) <br>
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal (unseal key) <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal (unseal key 1) <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal (unseal key 2) <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-0 -- vault operator unseal (unseal key 3) <br>
 
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-1 -- vault operator unseal (unseal key) <br>
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-1 -- vault operator unseal (unseal key) <br>
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-1 -- vault operator unseal (unseal key) <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-1 -- vault operator unseal (unseal key 1) <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-1 -- vault operator unseal (unseal key 2) <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-1 -- vault operator unseal (unseal key 3) <br>
 
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal (unseal key) <br>
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal (unseal key) <br>
-kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal (unseal key) <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal (unseal key 1) <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal (unseal key 2) <br>
+kubectl exec --stdin=true --tty=true -n postgres consul-db-vault-2 -- vault operator unseal (unseal key 3) <br>
 	
 kubectl exec -it -n postgres consul-db-vault-0 -- vault status <br>
 kubectl exec -it -n postgres consul-server-0 -- consul members <br>
 
 kubectl exec -it -n postgres consul-db-vault-0 -- vault login (root token)
-	
-kubectl exec -i -n postgres consul-db-vault-0 -- vault write postgres-policy - << EOF
-path "database/roles/*" {
-  capabilities = ["create", "read", "update", "delete", "list"] 
-}
 
-path "database/config/*" {
-  capabilities = ["create", "read", "update", "delete", "list"] 
-}
+kubectl exec -it -n postgres consul-db-vault-0 -- vault secrets enable database
 
-path "database/creds/jonos_db" {
-  capabilities = ["read"] 
-} <br>
-EOF
+kubectl exec -i -n postgres consul-db-vault-0 -- vault write postgres-policy - << EOF 
+path "database/roles/*" { capabilities = ["create", "read", "update", "delete", "list"] }
+
+path "database/config/*" { capabilities = ["create", "read", "update", "delete", "list"] }
+
+path "database/creds/jonos_db" { capabilities = ["read"] }
+EOF <br>
 
 kubectl exec -it -n postgres consul-db-vault-0 -- vault policy list
 
@@ -60,10 +56,6 @@ kubectl exec -it -n postgres consul-db-vault-0 -- vault token create -policy pos
 wget https://raw.githubusercontent.com/asvesj/terraform-gke-vault-consul-postgres/master/dynamic-secrets-k8s/config/postgres.yml
 
 kubectl create -n postgres -f postgres.yml 
-
-kubectl get pods -n postgres 
-
-kubectl exec -it -n postgres consul-db-vault-0 -- vault secrets enable database
 
 kubectl exec -it -n postgres consul-db-vault-0 -- vault write database/config/jonos_db \
     plugin_name=postgresql-database-plugin \
